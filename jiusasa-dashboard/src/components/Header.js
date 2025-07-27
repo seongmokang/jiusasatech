@@ -17,8 +17,8 @@ function Header({ todayCount, totalCount, date }) {
       {/* 좌측: 로고 */}
       <img
         src={logo}
-        alt="MAGOK WIRE JIU-JITSU Logo"
-        style={{ height: 80, objectFit: "contain" }}
+        alt="JIUSASA Logo"
+        style={{ height: 100, objectFit: "contain" }}
       />
       {/* 우측: 출석 정보 + 날짜 */}
       <div
