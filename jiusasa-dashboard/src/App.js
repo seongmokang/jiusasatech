@@ -1,12 +1,11 @@
 // src/App.js
 import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from "./components/Header";
 import BeltColumns from "./components/BeltColumns";
+import Footer from "./components/Footer";
 import { fetchAttendanceData } from "./services/fetchAttendance";
-
-console.log('fetchAttendanceData:', fetchAttendanceData);
-console.log('typeof fetchAttendanceData:', typeof fetchAttendanceData);
-
+import Bracket from "./components/Bracket";
 
 function getTodayString() {
   const today = new Date();
@@ -38,7 +37,7 @@ function normalize(Str) {
   return "";
 }
 
-function App() {
+function Dashboard() {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -87,11 +86,12 @@ function App() {
   return (
     <div
       style={{
-        minHeight: "100vh",
-        minWidth: "100vw",
+        height: "100vh",
+        width: "100vw",
         background: "#faf8f2",
         display: "flex",
         flexDirection: "column",
+        overflow: "hidden",
       }}
     >
       <Header
@@ -99,18 +99,39 @@ function App() {
         totalCount={totalStudents}
         date={today}
       />
-      <div style={{ flex: 1, display: "flex", alignItems: "stretch" }}>
+      <div style={{ flex: 1, display: "flex", alignItems: "stretch", overflow: "hidden" }}>
         <div style={{
           flex: 1,
           padding: "0 5vw",
           boxSizing: "border-box",
           height: "100%",
-          display: "flex"
+          display: "flex",
+          overflow: "hidden"
         }}>
           <BeltColumns students={students} />
         </div>
       </div>
+      <Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <div
+        style={{
+          minHeight: "100vh",
+          minWidth: "100vw",
+          background: "#faf8f2",
+        }}
+      >
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/bracket" element={<Bracket />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 

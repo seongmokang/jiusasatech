@@ -26,6 +26,7 @@ function BeltColumns({ students }) {
       gap: 32,
       width: "100%",
       height: "100%",
+      overflow: "hidden",
     }}>
       {grouped.map(belt => (
         <BeltColumn key={belt.key} belt={belt} students={belt.students} />

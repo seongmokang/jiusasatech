@@ -1,0 +1,196 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { fetchAttendanceData } from '../services/fetchAttendance';
+import BracketColumn from './BracketColumn';
+import Header from './Header';
+import Footer from './Footer';
+
+function getTodayString() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function parseDateFromTimestamp(ts) {
+  if (!ts) return "";
+  const match = ts.match(/(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})/);
+  if (!match) return "";
+  const [, year, month, day] = match;
+  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}
+
+function normalize(Str) {
+  if (!Str) return "";
+  if (Str.includes("화이트")) return "white";
+  if (Str.includes("블루") || Str.includes("파랑")) return "blue";
+  if (Str.includes("브라운") || Str.includes("갈색")) return "brown";
+  if (Str.includes("퍼플") || Str.includes("보라")) return "purple";
+  if (Str.includes("블랙") || Str.includes("검정")) return "black";
+  if (Str.includes("남")) return "male";
+  if (Str.includes("여")) return "female";
+  return "";
+}
+
+function Bracket() {
+  const navigate = useNavigate();
+  const [students, setStudents] = useState([]);
+  const [matches, setMatches] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  const today = getTodayString();
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const allData = await fetchAttendanceData();
+
+        // 오늘 출석자만 필터링
+        const todayStudents = allData
+          .filter(student => parseDateFromTimestamp(student.timestamp) === today)
+          .map(student => ({
+            name: student.name,
+            belt: normalize(student.belt),
+            affiliation: student.affiliation,
+            gender: normalize(student.gender),
+          }));
+        
+        setStudents(todayStudents);
+        
+        // 데이터 로딩 완료 후 자동으로 대진 생성
+        const allMatches = {};
+        ['white', 'blue', 'purple', 'brown', 'black'].forEach(belt => {
+          const beltStudents = todayStudents.filter(s => s.belt === belt);
+          if (beltStudents.length >= 2) {
+            allMatches[belt] = generateMatches(beltStudents);
+          }
+        });
+        setMatches(allMatches);
+      } catch (err) {
+        console.error('Error loading data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [today]);
+
+  // 대진 생성 함수
+  const generateMatches = (beltStudents) => {
+    if (beltStudents.length < 2) return [];
+    
+    // 랜덤 매칭
+    const shuffled = [...beltStudents].sort(() => Math.random() - 0.5);
+    const matches = [];
+    
+    for (let i = 0; i < shuffled.length; i += 2) {
+      if (i + 1 < shuffled.length) {
+        matches.push([shuffled[i], shuffled[i + 1]]);
+      } else {
+        // 홀수 명일 경우 마지막 사람은 부전승
+        matches.push([shuffled[i], null]);
+      }
+    }
+    
+    return matches;
+  };
+
+  // 대진 생성 버튼
+  const handleGenerateMatches = () => {
+    const allMatches = {};
+    ['white', 'blue', 'purple', 'brown', 'black'].forEach(belt => {
+      const beltStudents = students.filter(s => s.belt === belt);
+      if (beltStudents.length >= 2) {
+        allMatches[belt] = generateMatches(beltStudents);
+      }
+    });
+    setMatches(allMatches);
+  };
+
+  if (loading) {
+    return <div style={{ textAlign: "center", padding: "50px" }}>데이터를 불러오는 중...</div>;
+  }
+
+  return (
+    <div
+      style={{
+        height: "100vh",
+        width: "100vw",
+        background: "#faf8f2",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+      }}
+    >
+      <Header
+        todayCount={students.length}
+        totalCount={students.length}
+        date={today}
+      />
+      
+      {/* 대진 생성 버튼 영역 */}
+      <div style={{ 
+        display: "flex", 
+        justifyContent: "center", 
+        alignItems: "center", 
+        padding: "20px"
+      }}>
+        <button 
+          onClick={handleGenerateMatches}
+          style={{
+            padding: "12px 20px",
+            fontSize: "16px",
+            backgroundColor: "#222",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+            fontWeight: "bold",
+            transition: "background-color 0.2s"
+          }}
+          onMouseOver={(e) => e.target.style.backgroundColor = "#4caf50"}
+          onMouseOut={(e) => e.target.style.backgroundColor = "#222"}
+        >
+          대진 생성
+        </button>
+      </div>
+      
+      {/* 벨트 컬럼 영역 */}
+      <div style={{ flex: 1, display: "flex", alignItems: "stretch", overflow: "hidden" }}>
+        <div style={{
+          flex: 1,
+          padding: "0 5vw",
+          boxSizing: "border-box",
+          height: "100%",
+          display: "flex",
+          overflow: "hidden"
+        }}>
+          <div style={{
+            display: "flex",
+            flex: 1,
+            justifyContent: "space-around",
+            alignItems: "stretch",
+            gap: 32,
+            width: "100%",
+            height: "100%",
+            overflow: "hidden"
+          }}>
+            {['white', 'blue', 'purple', 'brown', 'black'].map(belt => (
+              <BracketColumn 
+                key={belt} 
+                belt={belt} 
+                matches={matches[belt] || []} 
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
+}
+
+export default Bracket; 
