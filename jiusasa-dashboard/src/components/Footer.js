@@ -1,4 +1,5 @@
 import React from 'react';
+import ad01 from '../assets/ad_01.jpeg';
 
 function Footer() {
   return (
@@ -32,11 +33,18 @@ function Footer() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          color: "#666",
-          fontSize: "1.2vw",
-          fontWeight: "bold"
+          overflow: "hidden"
         }}>
-          광고 영역 1
+          <img 
+            src={ad01} 
+            alt="광고 1" 
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              borderRadius: "6px"
+            }}
+          />
         </div>
         
         {/* 광고 영역 2 */}
