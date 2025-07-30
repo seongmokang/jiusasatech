@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import MatchCard from './MatchCard';
-import { BELT_LABEL_COLORS, BELT_BORDER_COLORS, BELT_COLORS, BELT_NAMES } from "../../constants/beltConfig";
+import { BELT_LABEL_COLORS, BELT_BORDER_COLORS, BELT_BORDER_WIDTHS, BELT_COLORS, BELT_NAMES } from "../../constants/beltConfig";
 
 function BracketColumn({ belt, matches, widthRatio = 1 }) {
   const scrollRef = useRef(null);
@@ -8,9 +8,11 @@ function BracketColumn({ belt, matches, widthRatio = 1 }) {
   const isManualScrollingRef = useRef(false);
   const scrollPositionRef = useRef(0);
   const scrollDirectionRef = useRef(1);
+  const timeoutRef = useRef(null);
   
   const beltLabelColor = BELT_LABEL_COLORS[belt] || "#222";
   const borderColor = BELT_BORDER_COLORS[belt] || "#222";
+  const borderWidth = BELT_BORDER_WIDTHS[belt] || "3px";
   const backgroundColor = BELT_COLORS[belt] || "#fff";
 
     // 자동 스크롤 효과
@@ -44,6 +46,9 @@ function BracketColumn({ belt, matches, widthRatio = 1 }) {
       if (autoScrollRef.current) {
         clearInterval(autoScrollRef.current);
       }
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     };
   }, [matches.length]);
 
@@ -52,14 +57,19 @@ function BracketColumn({ belt, matches, widthRatio = 1 }) {
     // 수동 스크롤 시작 시 자동 스크롤 중단
     isManualScrollingRef.current = true;
     
-    // 기존 타이머가 있다면 클리어
+    // 기존 자동 스크롤 타이머 클리어
     if (autoScrollRef.current) {
       clearInterval(autoScrollRef.current);
       autoScrollRef.current = null;
     }
     
+    // 기존 setTimeout 타이머 클리어 (중복 방지)
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    
     // 1초 후 자동 스크롤 재개
-    setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       isManualScrollingRef.current = false;
       // 수동 스크롤 후 현재 위치로 scrollPosition 동기화
       if (scrollRef.current) {
@@ -102,7 +112,7 @@ function BracketColumn({ belt, matches, widthRatio = 1 }) {
       minHeight: 0,
       boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
       textAlign: "center",
-      border: `3px solid ${borderColor}`,
+      border: `${borderWidth} solid ${borderColor}`,
       margin: "1vw 0",
       display: "flex",
       flexDirection: "column",

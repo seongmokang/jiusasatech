@@ -15,6 +15,14 @@ export const BELT_BORDER_COLORS = {
   black: "#222"
 };
 
+export const BELT_BORDER_WIDTHS = {
+  white: "6px",    // 화이트 벨트: 얇은 테두리
+  blue: "6px",     // 블루 벨트: 보통 테두리
+  brown: "6px",    // 브라운 벨트: 두꺼운 테두리
+  purple: "6px",   // 퍼플 벨트: 더 두꺼운 테두리
+  black: "6px"     // 블랙 벨트: 가장 두꺼운 테두리
+};
+
 export const BELT_COLORS = {
   white: '#fff',
   blue: '#fff',

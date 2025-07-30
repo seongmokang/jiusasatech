@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import logo from "../../assets/logo.png"; // 경로와 파일명 확인
+import logo from "../../assets/logo.png";
+console.log('Logo loaded:', logo);
 
 function Header({ todayCount = 0, totalCount = 0, date, onDrawWinners, winners = [], isDrawing = false }) {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ function Header({ todayCount = 0, totalCount = 0, date, onDrawWinners, winners =
   const isBracket = location.pathname === "/bracket";
   return (
     <div
+      className="header-container"
       style={{
         display: "flex",
         justifyContent: "space-between",
@@ -19,24 +21,79 @@ function Header({ todayCount = 0, totalCount = 0, date, onDrawWinners, winners =
         width: "100%",
         padding: "20px 20px 10px 20px",
         boxSizing: "border-box",
-        minHeight: "100px", // 필요시 높이 조정
+        minHeight: "100px",
       }}
     >
-      {/* 좌측: 로고 + 네비게이션 버튼 */}
-      <div style={{ 
+      {/* 모바일에서는 첫 번째 행 - 로고와 네비게이션 */}
+      <div className="header-top-row" style={{ 
         display: "flex", 
         alignItems: "center", 
         gap: "30px" 
       }}>
         <img
+          className="header-logo"
           src={logo}
           alt="JIUSASA Logo"
           style={{ height: 100, objectFit: "contain" }}
         />
-        {isDashboard && (
-          <>
+        
+        <div className="header-nav-buttons" style={{
+          display: "flex",
+          gap: "30px",
+          alignItems: "center"
+        }}>
+          {isDashboard && (
+            <>
+              <button
+                onClick={() => navigate("/bracket")}
+                style={{
+                  padding: "12px 20px",
+                  fontSize: "16px",
+                  backgroundColor: "#222",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                  transition: "background-color 0.2s"
+                }}
+                onMouseOver={(e) => e.target.style.backgroundColor = "#444"}
+                onMouseOut={(e) => e.target.style.backgroundColor = "#222"}
+              >
+                대진
+              </button>
+              <button
+                onClick={() => setShowDrawPopup(true)}
+                disabled={isDrawing || todayCount === 0}
+                style={{
+                  padding: "12px 20px",
+                  fontSize: "16px",
+                  backgroundColor: isDrawing || todayCount === 0 ? "#ccc" : "#e74c3c",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: isDrawing || todayCount === 0 ? "not-allowed" : "pointer",
+                  fontWeight: "bold",
+                  transition: "background-color 0.2s"
+                }}
+                onMouseOver={(e) => {
+                  if (!isDrawing && todayCount > 0) {
+                    e.target.style.backgroundColor = "#c0392b";
+                  }
+                }}
+                onMouseOut={(e) => {
+                  if (!isDrawing && todayCount > 0) {
+                    e.target.style.backgroundColor = "#e74c3c";
+                  }
+                }}
+              >
+                {isDrawing ? "추첨 중..." : "추첨"}
+              </button>
+            </>
+          )}
+          {isBracket && (
             <button
-              onClick={() => navigate("/bracket")}
+              onClick={() => navigate("/")}
               style={{
                 padding: "12px 20px",
                 fontSize: "16px",
@@ -51,62 +108,15 @@ function Header({ todayCount = 0, totalCount = 0, date, onDrawWinners, winners =
               onMouseOver={(e) => e.target.style.backgroundColor = "#444"}
               onMouseOut={(e) => e.target.style.backgroundColor = "#222"}
             >
-              대진
+              대시보드
             </button>
-            <button
-              onClick={() => setShowDrawPopup(true)}
-              disabled={isDrawing || todayCount === 0}
-              style={{
-                padding: "12px 20px",
-                fontSize: "16px",
-                backgroundColor: isDrawing || todayCount === 0 ? "#ccc" : "#e74c3c",
-                color: "white",
-                border: "none",
-                borderRadius: "8px",
-                cursor: isDrawing || todayCount === 0 ? "not-allowed" : "pointer",
-                fontWeight: "bold",
-                transition: "background-color 0.2s"
-              }}
-              onMouseOver={(e) => {
-                if (!isDrawing && todayCount > 0) {
-                  e.target.style.backgroundColor = "#c0392b";
-                }
-              }}
-              onMouseOut={(e) => {
-                if (!isDrawing && todayCount > 0) {
-                  e.target.style.backgroundColor = "#e74c3c";
-                }
-              }}
-            >
-              {isDrawing ? "추첨 중..." : "추첨"}
-            </button>
-          </>
-        )}
-        {isBracket && (
-          <button
-            onClick={() => navigate("/")}
-            style={{
-              padding: "12px 20px",
-              fontSize: "16px",
-              backgroundColor: "#222",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontWeight: "bold",
-              transition: "background-color 0.2s"
-            }}
-            onMouseOver={(e) => e.target.style.backgroundColor = "#444"}
-            onMouseOut={(e) => e.target.style.backgroundColor = "#222"}
-          >
-            대시보드
-          </button>
-        )}
+          )}
+        </div>
       </div>
       
-      
-      {/* 우측: 출석 정보 */}
+      {/* 모바일에서는 두 번째 행 - 출석 정보 */}
       <div
+        className="header-attendance-info"
         style={{
             fontSize: "2.5rem",
             fontWeight: "bold",
@@ -114,17 +124,15 @@ function Header({ todayCount = 0, totalCount = 0, date, onDrawWinners, winners =
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            height: "100%", // 부모 높이만큼 세로 중앙
+            height: "100%",
         }}
       >
-      <div>
-        오늘 함께한 사람들 {todayCount}명 / 지금까지 함께한 사람들 {totalCount+566}명
-        <span style={{ color: "#888", fontWeight: "bold", marginLeft: 8 }}>
-          <br></br>({date})
-        </span>
-      </div>
-        
-        
+        <div>
+          오늘 함께한 사람들 {todayCount}명 / 지금까지 함께한 사람들 {totalCount+566}명
+          <span className="header-attendance-date" style={{ color: "#888", fontWeight: "bold", marginLeft: 8 }}>
+            <br></br>({date})
+          </span>
+        </div>
       </div>
       
       {/* 추첨 팝업 */}

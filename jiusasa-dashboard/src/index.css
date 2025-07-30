@@ -113,3 +113,85 @@ code {
     opacity: 0;
   }
 }
+
+/* 모바일 반응형 CSS */
+@media (max-width: 768px) {
+  /* Header 모바일 최적화 */
+  .header-container {
+    flex-direction: column !important;
+    gap: 15px !important;
+    padding: 15px !important;
+    min-height: auto !important;
+  }
+  
+  .header-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .header-logo {
+    height: 60px !important;
+    width: auto !important;
+    max-width: 150px !important;
+  }
+  
+  .header-nav-buttons {
+    gap: 10px !important;
+  }
+  
+  .header-nav-buttons button {
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+  }
+  
+  .header-attendance-info {
+    font-size: 1rem !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+  
+  .header-attendance-date {
+    margin-left: 0 !important;
+    display: block !important;
+  }
+  
+  /* BeltColumns 모바일 최적화 - 세로 레이아웃 */
+  .belt-columns-container {
+    flex-direction: column !important;
+    gap: 20px !important;
+    padding: 0 20px !important;
+  }
+  
+  .belt-column {
+    width: 100% !important;
+    flex: none !important;
+    margin: 0 !important;
+  }
+  
+  /* Footer 모바일 최적화 - 세로 레이아웃 */
+  .footer-content {
+    flex-direction: column !important;
+    gap: 15px !important;
+  }
+  
+  .footer-ad-section {
+    flex-direction: column !important;
+    gap: 15px !important;
+  }
+  
+  .footer-ad-item {
+    width: 100% !important;
+    height: 120px !important;
+  }
+  
+  .footer-qr-section {
+    display: none !important;
+  }
+  
+  .footer-info {
+    text-align: left !important;
+    font-size: 0.8rem !important;
+  }
+}

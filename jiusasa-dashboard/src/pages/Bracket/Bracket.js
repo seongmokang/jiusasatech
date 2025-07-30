@@ -175,11 +175,9 @@ function Bracket() {
               const beltsWithMatches = ['white', 'blue', 'purple', 'brown', 'black']
                 .filter(belt => matches[belt] && matches[belt].length > 0);
               
-              const totalMatches = beltsWithMatches.reduce((sum, belt) => 
-                sum + (matches[belt] ? matches[belt].length : 0), 0);
-              
+              // 모든 띠를 동일한 고정 너비로 설정
               return beltsWithMatches.map(belt => {
-                const ratio = totalMatches > 0 ? Math.max(0.15, (matches[belt] ? matches[belt].length : 0) / totalMatches) : 0.15;
+                const ratio = 1; // 모든 띠 동일한 너비 (flex: 1)
                 
                 return (
                   <BracketColumn 

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import StudentCard from "../../components/ui/StudentCard";
-import { BELT_LABEL_COLORS, BELT_BORDER_COLORS } from "../../constants/beltConfig";
+import { BELT_LABEL_COLORS, BELT_BORDER_COLORS, BELT_BORDER_WIDTHS } from "../../constants/beltConfig";
 
 // 2개씩 배열을 나누는 유틸 함수
 function chunkArray(array, size) {
@@ -11,15 +11,16 @@ function chunkArray(array, size) {
   return result;
 }
 
-function BeltColumn({ belt, students, widthRatio = 1 }) {
+function BeltColumn({ belt, students, widthRatio = 1, className }) {
   const scrollRef = useRef(null);
   const autoScrollRef = useRef(null);
   const isManualScrollingRef = useRef(false);
   const scrollDirectionRef = useRef(1);
+  const timeoutRef = useRef(null);
   
   // 비율에 따라 가로로 표시할 학생 수 계산 (글자수 한 개 높이 간격)
   const getStudentsPerRow = () => {
-    if (widthRatio >= 0.3) return 4; // 30% 이상이면 4명씩
+    if (widthRatio >= 0.3) return 3; // 30% 이상이면 3명씩
     return 2; // 그 외에는 4명씩
   };
   
@@ -29,6 +30,7 @@ function BeltColumn({ belt, students, widthRatio = 1 }) {
   // 띠 이름 색상: 띠별 고정
   const beltLabelColor = BELT_LABEL_COLORS[belt.key] || "#222";
   const borderColor = BELT_BORDER_COLORS[belt.key] || "#222";
+  const borderWidth = BELT_BORDER_WIDTHS[belt.key] || "3px";
 
   // 자동 스크롤 효과
   useEffect(() => {
@@ -36,7 +38,7 @@ function BeltColumn({ belt, students, widthRatio = 1 }) {
     if (!scrollContainer || students.length <= 6) return; // 학생이 6명 이하면 스크롤 안함
 
     scrollDirectionRef.current = 1; // 초기 방향 설정
-    const scrollSpeed = 2; // 스크롤 속도 (픽셀/프레임)
+    const scrollSpeed = 5; // 스크롤 속도 (픽셀/프레임)
     const scrollInterval = 50; // 스크롤 간격 (ms)
 
     const autoScroll = () => {
@@ -61,6 +63,9 @@ function BeltColumn({ belt, students, widthRatio = 1 }) {
       if (autoScrollRef.current) {
         clearInterval(autoScrollRef.current);
       }
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     };
     
   }, [students.length]);
@@ -70,19 +75,24 @@ function BeltColumn({ belt, students, widthRatio = 1 }) {
     // 수동 스크롤 시작 시 자동 스크롤 중단
     isManualScrollingRef.current = true;
     
-    // 기존 타이머가 있다면 클리어
+    // 기존 자동 스크롤 타이머 클리어
     if (autoScrollRef.current) {
       clearInterval(autoScrollRef.current);
       autoScrollRef.current = null;
     }
     
+    // 기존 setTimeout 타이머 클리어 (중복 방지)
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    
     // 1초 후 자동 스크롤 재개
-    setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       isManualScrollingRef.current = false;
       // 자동 스크롤 재시작 (원래 속도 유지)
       const scrollContainer = scrollRef.current;
       if (scrollContainer && students.length > 6) {
-        const scrollSpeed = 2;
+        const scrollSpeed = 5; // 초기 속도와 동일하게 변경
         const scrollInterval = 50;
         // 현재 위치에 따라 방향 결정
         const maxScroll = scrollContainer.scrollHeight - scrollContainer.clientHeight;
@@ -111,6 +121,7 @@ function BeltColumn({ belt, students, widthRatio = 1 }) {
 
   return (
     <div
+      className={className}
       style={{
         background: belt.color,
         borderRadius: 24,
@@ -120,7 +131,7 @@ function BeltColumn({ belt, students, widthRatio = 1 }) {
         minHeight: 0,
         boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
         textAlign: "center",
-        border: `3px solid ${borderColor}`,
+        border: `${borderWidth} solid ${borderColor}`,
         margin: "1vw 0",
         display: "flex",
         flexDirection: "column",
