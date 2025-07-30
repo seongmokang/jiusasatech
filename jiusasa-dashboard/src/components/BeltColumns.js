@@ -17,6 +17,12 @@ function BeltColumns({ students }) {
     students: students.filter(s => s.belt === belt.key),
   }));
 
+  // 학생이 있는 벨트만 필터링
+  const beltsWithStudents = grouped.filter(belt => belt.students.length > 0);
+  
+  // 전체 학생 수 계산
+  const totalStudents = beltsWithStudents.reduce((sum, belt) => sum + belt.students.length, 0);
+
   return (
     <div style={{
       display: "flex",
@@ -28,9 +34,19 @@ function BeltColumns({ students }) {
       height: "100%",
       overflow: "hidden",
     }}>
-      {grouped.map(belt => (
-        <BeltColumn key={belt.key} belt={belt} students={belt.students} />
-      ))}
+      {beltsWithStudents.map(belt => {
+        // 각 벨트의 비율 계산 (최소 15% 보장)
+        const ratio = totalStudents > 0 ? Math.max(0.15, belt.students.length / totalStudents) : 0.15;
+        
+        return (
+          <BeltColumn 
+            key={belt.key} 
+            belt={belt} 
+            students={belt.students}
+            widthRatio={ratio}
+          />
+        );
+      })}
     </div>
   );
 }

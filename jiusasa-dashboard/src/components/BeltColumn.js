@@ -28,14 +28,21 @@ const beltBorderColors = {
   black: "#222"
 };
 
-function BeltColumn({ belt, students }) {
+function BeltColumn({ belt, students, widthRatio = 1 }) {
   const scrollRef = useRef(null);
   const autoScrollRef = useRef(null);
   const isManualScrollingRef = useRef(false);
   const scrollDirectionRef = useRef(1);
   
-  // 2개씩 묶기
-  const rows = chunkArray(students, 2);
+  // 비율에 따라 가로로 표시할 학생 수 계산
+  const getStudentsPerRow = () => {
+    if (widthRatio >= 0.4) return 5; // 40% 이상이면 3명씩
+    if (widthRatio >= 0.25) return 2; // 25% 이상이면 2명씩
+    return 1; // 그 외에는 1명씩
+  };
+  
+  const studentsPerRow = getStudentsPerRow();
+  const rows = chunkArray(students, studentsPerRow);
 
   // 띠 이름 색상: 띠별 고정
   const beltLabelColor = beltLabelColors[belt.key] || "#222";
@@ -127,7 +134,7 @@ function BeltColumn({ belt, students }) {
         borderRadius: 24,
         padding: "2vw 1vw",
         minWidth: 0,
-        flex: 1,
+        flex: widthRatio,
         minHeight: 0,
         boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
         textAlign: "center",
@@ -160,9 +167,14 @@ function BeltColumn({ belt, students }) {
         onScroll={handleScroll}
       >
         {rows.map((row, rowIdx) => (
-          <div key={rowIdx} style={{ display: "flex", justifyContent: "center", gap: 12, marginBottom: 12 }}>
+          <div key={rowIdx} style={{ 
+            display: "flex", 
+            justifyContent: "center", 
+            gap: widthRatio >= 0.4 ? 8 : 12, 
+            marginBottom: 12 
+          }}>
             {row.map((student, idx) => (
-              <StudentCard key={idx} student={student} />
+              <StudentCard key={idx} student={student} widthRatio={widthRatio} />
             ))}
           </div>
         ))}

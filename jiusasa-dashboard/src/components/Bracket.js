@@ -100,6 +100,8 @@ function Bracket() {
 
   // 대진 생성 버튼
   const handleGenerateMatches = () => {
+    if (!students || students.length === 0) return;
+    
     const allMatches = {};
     ['white', 'blue', 'purple', 'brown', 'black'].forEach(belt => {
       const beltStudents = students.filter(s => s.belt === belt);
@@ -111,7 +113,16 @@ function Bracket() {
   };
 
   if (loading) {
-    return <div style={{ textAlign: "center", padding: "50px" }}>데이터를 불러오는 중...</div>;
+    return (
+      <div style={{ 
+        textAlign: "center", 
+        padding: "50px",
+        fontSize: "18px",
+        color: "#666"
+      }}>
+        대진표 데이터를 불러오는 중...
+      </div>
+    );
   }
 
   return (
@@ -126,8 +137,8 @@ function Bracket() {
       }}
     >
       <Header
-        todayCount={students.length}
-        totalCount={students.length}
+        todayCount={students ? students.length : 0}
+        totalCount={students ? students.length : 0}
         date={today}
       />
       
@@ -178,13 +189,26 @@ function Bracket() {
             height: "100%",
             overflow: "hidden"
           }}>
-            {['white', 'blue', 'purple', 'brown', 'black'].map(belt => (
-              <BracketColumn 
-                key={belt} 
-                belt={belt} 
-                matches={matches[belt] || []} 
-              />
-            ))}
+            {(() => {
+              const beltsWithMatches = ['white', 'blue', 'purple', 'brown', 'black']
+                .filter(belt => matches[belt] && matches[belt].length > 0);
+              
+              const totalMatches = beltsWithMatches.reduce((sum, belt) => 
+                sum + (matches[belt] ? matches[belt].length : 0), 0);
+              
+              return beltsWithMatches.map(belt => {
+                const ratio = totalMatches > 0 ? Math.max(0.15, (matches[belt] ? matches[belt].length : 0) / totalMatches) : 0.15;
+                
+                return (
+                  <BracketColumn 
+                    key={belt} 
+                    belt={belt} 
+                    matches={matches[belt] || []}
+                    widthRatio={ratio}
+                  />
+                );
+              });
+            })()}
           </div>
         </div>
       </div>

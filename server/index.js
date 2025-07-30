@@ -20,7 +20,7 @@ app.get('/api/attendance', async (req, res) => {
   try {
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.GOOGLE_SHEETS_SPREADSHEET_ID,
-      range: '설문지 응답 시트1!A:G', // 시트 이름과 범위
+      range: 'JIUSASA_DB!A:G', // 시트 이름과 범위
     });
     const rows = response.data.values;
     const dataRows = rows.slice(1); // 첫 줄은 헤더

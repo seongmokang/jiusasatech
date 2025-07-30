@@ -6,6 +6,7 @@ import BeltColumns from "./components/BeltColumns";
 import Footer from "./components/Footer";
 import { fetchAttendanceData } from "./services/fetchAttendance";
 import Bracket from "./components/Bracket";
+import RouletteAnimation from "./components/RouletteAnimation";
 
 function getTodayString() {
   const today = new Date();
@@ -41,6 +42,9 @@ function Dashboard() {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [winners, setWinners] = useState([]);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [showRoulette, setShowRoulette] = useState(false);
 
   const today = getTodayString();
   const [totalStudents, setTotalStudents] = useState(0);
@@ -79,6 +83,23 @@ function Dashboard() {
     return <div style={{ textAlign: "center", padding: "50px" }}>데이터를 불러오는 중...</div>;
   }
 
+  // 추첨 함수 (룰렛 스타일)
+  const drawWinners = (count) => {
+    if (students.length === 0) return;
+    
+    setIsDrawing(true);
+    setShowRoulette(true);
+    
+    // 룰렛 애니메이션 완료 후 결과 표시
+    setTimeout(() => {
+      const shuffled = [...students].sort(() => Math.random() - 0.5);
+      const selected = shuffled.slice(0, Math.min(count, students.length));
+      setWinners(selected);
+      setIsDrawing(false);
+      setShowRoulette(false);
+    }, 3000);
+  };
+
   if (error) {
     return <div style={{ textAlign: "center", padding: "50px", color: "red" }}>오류: {error}</div>;
   }
@@ -98,6 +119,9 @@ function Dashboard() {
         todayCount={students.length}
         totalCount={totalStudents}
         date={today}
+        onDrawWinners={drawWinners}
+        winners={winners}
+        isDrawing={isDrawing}
       />
       <div style={{ flex: 1, display: "flex", alignItems: "stretch", overflow: "hidden" }}>
         <div style={{
@@ -111,7 +135,17 @@ function Dashboard() {
           <BeltColumns students={students} />
         </div>
       </div>
-      <Footer />
+      <Footer winners={winners} isDrawing={isDrawing} />
+      
+      {/* 룰렛 애니메이션 */}
+      {showRoulette && (
+        <RouletteAnimation 
+          isSpinning={isDrawing}
+          onComplete={() => {
+            // 애니메이션 완료 시 호출될 함수
+          }}
+        />
+      )}
     </div>
   );
 }

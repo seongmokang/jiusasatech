@@ -28,7 +28,7 @@ const beltColors = {
   black: '#fff'
 };
 
-function BracketColumn({ belt, matches }) {
+function BracketColumn({ belt, matches, widthRatio = 1 }) {
   const scrollRef = useRef(null);
   const autoScrollRef = useRef(null);
   const isManualScrollingRef = useRef(false);
@@ -132,7 +132,7 @@ function BracketColumn({ belt, matches }) {
       borderRadius: 24,
       padding: "2vw 1vw",
       minWidth: 0,
-      flex: 1,
+      flex: widthRatio,
       minHeight: 0,
       boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
       textAlign: "center",
@@ -169,6 +169,7 @@ function BracketColumn({ belt, matches }) {
               key={index}
               match={match}
               matchNumber={index + 1}
+              widthRatio={widthRatio}
             />
           ))
         ) : (
