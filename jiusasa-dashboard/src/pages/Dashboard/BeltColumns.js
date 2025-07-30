@@ -1,18 +1,11 @@
 import React from "react";
 import BeltColumn from "./BeltColumn";
 
-// 띠 종류와 색상 매핑
-const belts = [
-  { key: "white", label: "White", color: "#fff" },
-  { key: "blue", label: "Blue", color: "#fff" },
-  { key: "purple", label: "Purple", color: "#fff" },
-  { key: "brown", label: "Brown", color: "#fff" },
-  { key: "black", label: "Black", color: "#fff" },
-];
+import { BELTS } from "../../constants/beltConfig";
 
 function BeltColumns({ students }) {
   // 띠별로 학생 분류
-  const grouped = belts.map(belt => ({
+  const grouped = BELTS.map(belt => ({
     ...belt,
     students: students.filter(s => s.belt === belt.key),
   }));

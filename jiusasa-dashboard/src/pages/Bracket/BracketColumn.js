@@ -1,32 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import MatchCard from './MatchCard';
-
-// 띠별 라벨 색상 매핑 (대시보드와 동일)
-const beltLabelColors = {
-  white: "#222",      // 검정
-  blue: "#1976d2",    // 파랑
-  brown: "#8d5524",   // 갈색
-  purple: "#7c3aed",  // 보라
-  black: "#222"       // 검정
-};
-
-// 띠별 테두리 색상 매핑 (대시보드와 동일)
-const beltBorderColors = {
-  white: "#bbb",
-  blue: "#1976d2",
-  brown: "#8d5524",
-  purple: "#7c3aed",
-  black: "#222"
-};
-
-// 띠별 배경색 매핑 (대시보드와 동일)
-const beltColors = {
-  white: '#fff',
-  blue: '#fff',
-  brown: '#fff',
-  purple: '#fff',
-  black: '#fff'
-};
+import { BELT_LABEL_COLORS, BELT_BORDER_COLORS, BELT_COLORS, BELT_NAMES } from "../../constants/beltConfig";
 
 function BracketColumn({ belt, matches, widthRatio = 1 }) {
   const scrollRef = useRef(null);
@@ -35,17 +9,9 @@ function BracketColumn({ belt, matches, widthRatio = 1 }) {
   const scrollPositionRef = useRef(0);
   const scrollDirectionRef = useRef(1);
   
-  const beltNames = {
-    white: 'White',
-    blue: 'Blue',
-    brown: 'Brown',
-    purple: 'Purple',
-    black: 'Black'
-  };
-
-  const beltLabelColor = beltLabelColors[belt] || "#222";
-  const borderColor = beltBorderColors[belt] || "#222";
-  const backgroundColor = beltColors[belt] || "#fff";
+  const beltLabelColor = BELT_LABEL_COLORS[belt] || "#222";
+  const borderColor = BELT_BORDER_COLORS[belt] || "#222";
+  const backgroundColor = BELT_COLORS[belt] || "#fff";
 
     // 자동 스크롤 효과
   useEffect(() => {
@@ -150,7 +116,7 @@ function BracketColumn({ belt, matches, widthRatio = 1 }) {
         color: beltLabelColor,
         flexShrink: 0 // 헤더는 고정
       }}>
-        {beltNames[belt]}
+        {BELT_NAMES[belt]}
       </div>
       <div 
         ref={scrollRef}

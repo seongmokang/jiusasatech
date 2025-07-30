@@ -1,6 +1,6 @@
 import React from 'react';
-import ad01 from '../assets/ad_01.jpeg';
-import qrCode from '../assets/qr_code.jpeg';
+import ad01 from '../../assets/ad_01.jpeg';
+import qrCode from '../../assets/qr_code.jpeg';
 
 function Footer({ winners = [], isDrawing = false }) {
   return (

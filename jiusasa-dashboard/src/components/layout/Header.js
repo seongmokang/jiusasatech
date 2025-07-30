@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import logo from "../assets/logo.png"; // 경로와 파일명 확인
+import logo from "../../assets/logo.png"; // 경로와 파일명 확인
 
 function Header({ todayCount = 0, totalCount = 0, date, onDrawWinners, winners = [], isDrawing = false }) {
   const navigate = useNavigate();

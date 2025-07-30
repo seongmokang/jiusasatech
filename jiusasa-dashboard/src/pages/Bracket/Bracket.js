@@ -1,37 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchAttendanceData } from '../services/fetchAttendance';
+import { fetchAttendanceData } from '../../services/fetchAttendance';
 import BracketColumn from './BracketColumn';
-import Header from './Header';
-import Footer from './Footer';
+import Header from '../../components/layout/Header';
+import Footer from '../../components/layout/Footer';
 
-function getTodayString() {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, "0");
-  const day = String(today.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
-function parseDateFromTimestamp(ts) {
-  if (!ts) return "";
-  const match = ts.match(/(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})/);
-  if (!match) return "";
-  const [, year, month, day] = match;
-  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-}
-
-function normalize(Str) {
-  if (!Str) return "";
-  if (Str.includes("화이트")) return "white";
-  if (Str.includes("블루") || Str.includes("파랑")) return "blue";
-  if (Str.includes("브라운") || Str.includes("갈색")) return "brown";
-  if (Str.includes("퍼플") || Str.includes("보라")) return "purple";
-  if (Str.includes("블랙") || Str.includes("검정")) return "black";
-  if (Str.includes("남")) return "male";
-  if (Str.includes("여")) return "female";
-  return "";
-}
+import { getTodayString, parseDateFromTimestamp } from '../../utils/dateUtils';
+import { normalize } from '../../utils/normalize';
 
 function Bracket() {
   const navigate = useNavigate();

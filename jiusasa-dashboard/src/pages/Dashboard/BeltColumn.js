@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
-import StudentCard from "./StudentCard";
+import StudentCard from "../../components/ui/StudentCard";
+import { BELT_LABEL_COLORS, BELT_BORDER_COLORS } from "../../constants/beltConfig";
 
 // 2개씩 배열을 나누는 유틸 함수
 function chunkArray(array, size) {
@@ -9,24 +10,6 @@ function chunkArray(array, size) {
   }
   return result;
 }
-
-// 띠별 라벨 색상 매핑
-const beltLabelColors = {
-    white: "#222",      // 검정
-    blue: "#1976d2",    // 파랑
-    brown: "#8d5524",   // 갈색
-    purple: "#7c3aed",  // 보라
-    black: "#222"       // 검정
-  };
-
-// 띠별 테두리 색상 매핑
-const beltBorderColors = {
-  white: "#bbb",
-  blue: "#1976d2",
-  brown: "#8d5524",
-  purple: "#7c3aed",
-  black: "#222"
-};
 
 function BeltColumn({ belt, students, widthRatio = 1 }) {
   const scrollRef = useRef(null);
@@ -44,8 +27,8 @@ function BeltColumn({ belt, students, widthRatio = 1 }) {
   const rows = chunkArray(students, studentsPerRow);
 
   // 띠 이름 색상: 띠별 고정
-  const beltLabelColor = beltLabelColors[belt.key] || "#222";
-  const borderColor = beltBorderColors[belt.key] || "#222";
+  const beltLabelColor = BELT_LABEL_COLORS[belt.key] || "#222";
+  const borderColor = BELT_BORDER_COLORS[belt.key] || "#222";
 
   // 자동 스크롤 효과
   useEffect(() => {
