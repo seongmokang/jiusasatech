@@ -13,25 +13,18 @@ function maskName(name) {
 }
 
 function StudentCard({ student, widthRatio = 1 }) {
-  // 비율에 따른 폰트 크기 계산
-  const getFontSize = () => {
-    if (widthRatio >= 0.4) return "1.8vw"; // 40% 이상이면 작게
-    if (widthRatio >= 0.25) return "2vw"; // 25% 이상이면 보통
-    return "2.2vw"; // 그 외에는 크게
-  };
-  
-  const fontSize = getFontSize();
   return (
-    <div style={{ marginBottom: 12 }}>
+    <div style={{ marginBottom: 6 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ color: nameColor(student.gender), fontWeight: "bold", fontSize: fontSize, lineHeight: 1.1 }}>
+        <div style={{ color: nameColor(student.gender), fontWeight: "bold", fontSize: "1.6vw", lineHeight: 1 }}>
           {maskName(student.name)}
         </div>
       </div>
       <div style={{ 
-        fontSize: widthRatio >= 0.4 ? "0.8rem" : "1rem", 
+        fontSize: "0.8rem", 
         color: "#555",
-        textAlign: "center"
+        textAlign: "center",
+        marginTop: 2
       }}>
         {student.affiliation}
       </div>

@@ -36,7 +36,7 @@ function BeltColumns({ students }) {
     }}>
       {beltsWithStudents.map(belt => {
         // 각 벨트의 비율 계산 (최소 15% 보장)
-        const ratio = totalStudents > 0 ? Math.max(0.15, belt.students.length / totalStudents) : 0.15;
+        const ratio = totalStudents > 0 ? Math.max(0.15, belt.students.length / totalStudents) : 0.20;
         
         return (
           <BeltColumn 

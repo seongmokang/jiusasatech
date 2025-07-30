@@ -25,7 +25,7 @@ function Footer({ winners = [], isDrawing = false }) {
           fontSize: "1.2rem",
           color: "#856404",
           animation: "slideIn 0.5s ease-out",
-          width: "75%"
+          width: "98%"
         }}>
           <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", justifyContent: "center" }}>
             {winners.map((winner, index) => (

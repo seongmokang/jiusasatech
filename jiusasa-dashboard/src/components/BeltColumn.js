@@ -34,11 +34,10 @@ function BeltColumn({ belt, students, widthRatio = 1 }) {
   const isManualScrollingRef = useRef(false);
   const scrollDirectionRef = useRef(1);
   
-  // 비율에 따라 가로로 표시할 학생 수 계산
+  // 비율에 따라 가로로 표시할 학생 수 계산 (글자수 한 개 높이 간격)
   const getStudentsPerRow = () => {
-    if (widthRatio >= 0.4) return 5; // 40% 이상이면 3명씩
-    if (widthRatio >= 0.25) return 2; // 25% 이상이면 2명씩
-    return 1; // 그 외에는 1명씩
+    if (widthRatio >= 0.3) return 4; // 30% 이상이면 4명씩
+    return 2; // 그 외에는 4명씩
   };
   
   const studentsPerRow = getStudentsPerRow();
@@ -170,8 +169,8 @@ function BeltColumn({ belt, students, widthRatio = 1 }) {
           <div key={rowIdx} style={{ 
             display: "flex", 
             justifyContent: "center", 
-            gap: widthRatio >= 0.4 ? 8 : 12, 
-            marginBottom: 12 
+            gap: widthRatio >= 0.4 ? 12 : 16, 
+            marginBottom: 20
           }}>
             {row.map((student, idx) => (
               <StudentCard key={idx} student={student} widthRatio={widthRatio} />

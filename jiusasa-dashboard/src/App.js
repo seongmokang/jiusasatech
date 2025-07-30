@@ -55,6 +55,14 @@ function Dashboard() {
         setLoading(true);
         const allData = await fetchAttendanceData();
 
+        // allData가 배열인지 확인하고 안전하게 처리
+        if (!Array.isArray(allData)) {
+          console.error('allData is not an array:', allData);
+          setStudents([]);
+          setTotalStudents(0);
+          return;
+        }
+
         // 오늘 출석자만 필터링
         const todayStudents = allData
           .filter(student => parseDateFromTimestamp(student.timestamp) === today)
