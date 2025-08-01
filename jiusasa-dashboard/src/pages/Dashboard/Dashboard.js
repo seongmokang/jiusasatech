@@ -84,6 +84,7 @@ function Dashboard() {
 
   return (
     <div
+      className="dashboard-container"
       style={{
         height: "100vh",
         width: "100vw",
@@ -101,7 +102,9 @@ function Dashboard() {
         winners={winners}
         isDrawing={isDrawing}
       />
-      <div style={{ flex: 1, display: "flex", alignItems: "stretch", overflow: "hidden" }}>
+      <div 
+        className="dashboard-main"
+        style={{ flex: 1, display: "flex", alignItems: "stretch", overflow: "hidden" }}>
         <div style={{
           flex: 1,
           padding: "0 5vw",

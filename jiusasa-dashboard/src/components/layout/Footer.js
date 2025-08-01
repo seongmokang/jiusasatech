@@ -55,11 +55,13 @@ console.log('QR code loaded:', qrCode);
 
 function Footer({ winners = [], isDrawing = false }) {
   return (
-    <div style={{
+    <div 
+      className="footer-container"
+      style={{
       background: "#f5f5f5",
       borderTop: "1px solid #e0e0e0",
       padding: "20px 32px",
-      height: "30vh",
+      height: "25vh",
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between",

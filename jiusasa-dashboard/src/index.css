@@ -1,3 +1,10 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,6 +12,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-overflow-scrolling: touch;
 }
 
 code {
@@ -114,8 +122,30 @@ code {
   }
 }
 
+/* 태블릿 반응형 CSS */
+@media (max-width: 1024px) {
+  .header-container {
+    padding: 20px 15px !important;
+  }
+  
+  .header-attendance-info {
+    font-size: 2rem !important;
+  }
+  
+  .belt-columns-container {
+    gap: 20px !important;
+    padding: 0 15px !important;
+  }
+}
+
 /* 모바일 반응형 CSS */
 @media (max-width: 768px) {
+  /* 메인 컨테이너 모바일 최적화 */
+  .dashboard-container {
+    height: auto !important;
+    min-height: 100vh !important;
+  }
+  
   /* Header 모바일 최적화 */
   .header-container {
     flex-direction: column !important;
@@ -147,21 +177,27 @@ code {
   }
   
   .header-attendance-info {
-    font-size: 1rem !important;
+    font-size: 1.2rem !important;
     text-align: center !important;
     width: 100% !important;
+    line-height: 1.4 !important;
   }
   
   .header-attendance-date {
     margin-left: 0 !important;
     display: block !important;
+    margin-top: 5px !important;
   }
   
   /* BeltColumns 모바일 최적화 - 세로 레이아웃 */
   .belt-columns-container {
     flex-direction: column !important;
     gap: 20px !important;
-    padding: 0 20px !important;
+    padding: 20px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    height: auto !important;
+    min-height: 100% !important;
   }
   
   .belt-column {
@@ -174,16 +210,26 @@ code {
   .footer-content {
     flex-direction: column !important;
     gap: 15px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    max-height: 25vh !important;
   }
   
   .footer-ad-section {
     flex-direction: column !important;
     gap: 15px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    max-height: 20vh !important;
   }
   
   .footer-ad-item {
     width: 100% !important;
-    height: 120px !important;
+    height: 150px !important;
+    flex-shrink: 0 !important;
+    margin-bottom: 10px !important;
   }
   
   .footer-qr-section {
@@ -193,5 +239,180 @@ code {
   .footer-info {
     text-align: left !important;
     font-size: 0.8rem !important;
+  }
+  
+  /* Footer 전체 높이 모바일 최적화 */
+  .footer-container {
+    height: 30vh !important;
+    min-height: 200px !important;
+    max-height: 40vh !important;
+  }
+  
+  /* 추첨 팝업 모바일 최적화 */
+  .draw-popup-content {
+    min-width: 90vw !important;
+    padding: 20px !important;
+    margin: 0 10px !important;
+  }
+  
+  .draw-popup-content h2 {
+    font-size: 20px !important;
+  }
+  
+  .draw-popup-content input {
+    width: 80px !important;
+    padding: 8px !important;
+    font-size: 16px !important;
+  }
+  
+  /* Dashboard 메인 컨테이너 모바일 최적화 */
+  .dashboard-main {
+    padding: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+  
+  .dashboard-main > div {
+    overflow: visible !important;
+    height: auto !important;
+  }
+}
+
+/* 작은 모바일 디바이스 (iPhone SE 등) */
+@media (max-width: 480px) {
+  .header-logo {
+    height: 50px !important;
+    max-width: 120px !important;
+  }
+  
+  .header-nav-buttons button {
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+  }
+  
+  .header-attendance-info {
+    font-size: 1rem !important;
+  }
+  
+  .belt-columns-container {
+    gap: 10px !important;
+    padding: 10px !important;
+  }
+  
+  .dashboard-main {
+    overflow-y: auto !important;
+  }
+  
+  .footer-ad-item {
+    height: 120px !important;
+    font-size: 12px !important;
+    flex-shrink: 0 !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .footer-ad-section {
+    max-height: 15vh !important;
+  }
+  
+  /* 모바일에서 스크롤바 표시 */
+  @media (max-width: 768px) {
+    .footer-ad-section::-webkit-scrollbar {
+      width: 4px !important;
+      display: block !important;
+    }
+    
+    .footer-ad-section::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.1) !important;
+      border-radius: 2px !important;
+    }
+    
+    .footer-ad-section::-webkit-scrollbar-thumb {
+      background: rgba(0,0,0,0.3) !important;
+      border-radius: 2px !important;
+    }
+    
+    .footer-ad-section::-webkit-scrollbar-thumb:hover {
+      background: rgba(0,0,0,0.5) !important;
+    }
+  }
+  
+  .draw-popup-content {
+    padding: 15px !important;
+  }
+  
+  .draw-popup-content h2 {
+    font-size: 18px !important;
+  }
+  
+  /* StudentCard affiliation 작은 모바일 최적화 */
+  .belt-column .student-card .student-affiliation {
+    font-size: 10px !important;
+    line-height: 1.0 !important;
+  }
+}
+
+/* 터치 인터페이스 최적화 - 모든 화면 크기 */
+button, input, select, textarea {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  touch-action: manipulation;
+}
+
+/* 터치 친화적인 버튼 크기 */
+@media (max-width: 768px) {
+  /* 최소 터치 타겟 크기 44px 보장 */
+  button {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+  
+  /* 입력 필드 터치 최적화 */
+  input {
+    min-height: 44px !important;
+    -webkit-appearance: none;
+    border-radius: 8px !important;
+  }
+  
+  /* 스크롤 영역 터치 최적화 */
+  .belt-columns-container {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  .dashboard-main {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* iOS Safari 스크롤 문제 해결 */
+  .dashboard-container {
+    overflow: visible !important;
+  }
+  
+  /* 터치 피드백 향상 */
+  .header-nav-buttons button:active {
+    transform: scale(0.95);
+    background-color: #555 !important;
+  }
+  
+  .draw-popup-content button:active {
+    transform: scale(0.95);
+  }
+  
+  /* StudentCard 모바일 최적화 */
+  .belt-column .student-card {
+    margin-bottom: 8px !important;
+  }
+  
+  .belt-column .student-card .student-name {
+    font-size: 16px !important;
+    line-height: 1.2 !important;
+  }
+  
+  .belt-column .student-card .student-affiliation {
+    font-size: 12px !important;
+    margin-top: 4px !important;
+    line-height: 1.1 !important;
+    word-break: keep-all !important;
+    text-align: center !important;
   }
 }
