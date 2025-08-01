@@ -250,9 +250,10 @@ code {
   
   /* 추첨 팝업 모바일 최적화 */
   .draw-popup-content {
-    min-width: 90vw !important;
+    width: 350px !important;
+    max-width: 90vw !important;
     padding: 20px !important;
-    margin: 0 10px !important;
+    margin: 0 auto !important;
   }
   
   .draw-popup-content h2 {
@@ -337,6 +338,8 @@ code {
   }
   
   .draw-popup-content {
+    width: 300px !important;
+    max-width: 85vw !important;
     padding: 15px !important;
   }
   

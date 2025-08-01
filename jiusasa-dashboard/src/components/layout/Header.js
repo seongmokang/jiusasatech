@@ -181,9 +181,8 @@ function Header({ todayCount = 0, totalCount = 0, date, onDrawWinners, winners =
               padding: "30px",
               borderRadius: "12px",
               boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
-              minWidth: "400px",
+              width: "400px",
               maxWidth: "90vw",
-              width: "100%",
               textAlign: "center"
             }}>
             <h2 style={{
