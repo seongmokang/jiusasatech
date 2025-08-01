@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.png";
 console.log('Logo loaded:', logo);
 
-function Header({ todayCount = 0, totalCount = 0, date, onDrawWinners, winners = [], isDrawing = false }) {
+function Header({ todayCount = 0, totalCount = 0, date, onDrawWinners, winners = [], isDrawing = false, onGenerateMatches }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [showDrawPopup, setShowDrawPopup] = useState(false);
@@ -92,24 +92,46 @@ function Header({ todayCount = 0, totalCount = 0, date, onDrawWinners, winners =
             </>
           )}
           {isBracket && (
-            <button
-              onClick={() => navigate("/")}
-              style={{
-                padding: "12px 20px",
-                fontSize: "16px",
-                backgroundColor: "#222",
-                color: "white",
-                border: "none",
-                borderRadius: "8px",
-                cursor: "pointer",
-                fontWeight: "bold",
-                transition: "background-color 0.2s"
-              }}
-              onMouseOver={(e) => e.target.style.backgroundColor = "#444"}
-              onMouseOut={(e) => e.target.style.backgroundColor = "#222"}
-            >
-              대시보드
-            </button>
+            <>
+              <button
+                onClick={() => navigate("/")}
+                style={{
+                  padding: "12px 20px",
+                  fontSize: "16px",
+                  backgroundColor: "#222",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                  transition: "background-color 0.2s"
+                }}
+                onMouseOver={(e) => e.target.style.backgroundColor = "#444"}
+                onMouseOut={(e) => e.target.style.backgroundColor = "#222"}
+              >
+                대시보드
+              </button>
+              {onGenerateMatches && (
+                <button
+                  onClick={onGenerateMatches}
+                  style={{
+                    padding: "12px 20px",
+                    fontSize: "16px",
+                    backgroundColor: "#4caf50",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                    transition: "background-color 0.2s"
+                  }}
+                  onMouseOver={(e) => e.target.style.backgroundColor = "#45a049"}
+                  onMouseOut={(e) => e.target.style.backgroundColor = "#4caf50"}
+                >
+                  대진생성
+                </button>
+              )}
+            </>
           )}
         </div>
       </div>

@@ -122,34 +122,10 @@ function Bracket() {
         todayCount={students ? students.length : 0}
         totalCount={students ? students.length : 0}
         date={today}
+        onGenerateMatches={handleGenerateMatches}
       />
       
-      {/* 대진 생성 버튼 영역 */}
-      <div style={{ 
-        display: "flex", 
-        justifyContent: "center", 
-        alignItems: "center", 
-        padding: "20px"
-      }}>
-        <button 
-          onClick={handleGenerateMatches}
-          style={{
-            padding: "12px 20px",
-            fontSize: "16px",
-            backgroundColor: "#222",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            cursor: "pointer",
-            fontWeight: "bold",
-            transition: "background-color 0.2s"
-          }}
-          onMouseOver={(e) => e.target.style.backgroundColor = "#4caf50"}
-          onMouseOut={(e) => e.target.style.backgroundColor = "#222"}
-        >
-          대진 생성
-        </button>
-      </div>
+
       
       {/* 벨트 컬럼 영역 */}
       <div style={{ flex: 1, display: "flex", alignItems: "stretch", overflow: "hidden" }}>
