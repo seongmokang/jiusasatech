@@ -61,12 +61,29 @@ function Footer({ winners = [], isDrawing = false }) {
       background: "#f5f5f5",
       borderTop: "1px solid #e0e0e0",
       padding: "20px 32px",
-      height: "25vh",
+      height: "32vh",
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between",
       alignItems: "stretch"
     }}>
+      {/* 경품추첨 안내 */}
+      <div style={{
+        backgroundColor: "#fff",
+        border: "2px solid #4CAF50",
+        borderRadius: "10px",
+        padding: "12px 20px",
+        marginBottom: "15px",
+        textAlign: "center",
+        fontSize: "1.1rem",
+        fontWeight: "bold",
+        color: "#2E7D32",
+        boxShadow: "0 2px 8px rgba(76, 175, 80, 0.15)",
+        background: "linear-gradient(135deg, #E8F5E8 0%, #F1F8E9 100%)"
+      }}>
+        🎁 대회 종료 후 경품추첨이 진행됩니다! 🎁
+      </div>
+      
       {/* 추첨 결과 표시 */}
       {winners.length > 0 && !isDrawing && (
         <div style={{

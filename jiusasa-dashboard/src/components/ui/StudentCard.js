@@ -12,14 +12,19 @@ function maskName(name) {
 
 // affiliation 줄바꿈 처리 함수 (5글자 초과 시)
 function formatAffiliation(affiliation) {
-  if (!affiliation || affiliation.length <= 5) {
-    return affiliation;
+  if (!affiliation) return affiliation;
+  
+  // 띄어쓰기 제거
+  const cleanAffiliation = affiliation.replace(/\s+/g, '');
+  
+  if (cleanAffiliation.length <= 5) {
+    return cleanAffiliation;
   }
   
   // 5글자마다 줄바꿈
   const chunks = [];
-  for (let i = 0; i < affiliation.length; i += 5) {
-    chunks.push(affiliation.slice(i, i + 5));
+  for (let i = 0; i < cleanAffiliation.length; i += 5) {
+    chunks.push(cleanAffiliation.slice(i, i + 5));
   }
   
   return chunks;
